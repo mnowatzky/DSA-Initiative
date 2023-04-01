@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Initialize Initiative</title>
+
+        <style>
+            h1 {
+                font-size: 36pt;
+            }
+            body {
+                font-size: 24pt;
+            }
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+                font-size: 24pt;
+                padding: 5px;
+            }
+            input {
+                font-size: 24pt;
+            }
+        </style>
+
+        <script>
+            function addRow() {
+                const table = document.getElementById("initiative_table");
+
+                var row = table.insertRow(-1);
+                var nameCell = row.insertCell(0);
+                var iniCell = row.insertCell(1);
+                var dieCell = row.insertCell(2);
+
+                nameCell.innerHTML = '<INPUT TYPE="text" NAME="character_name[]" MAXLENGTH="20" placeholder="Charakter Name">';
+                iniCell.innerHTML = '<INPUT TYPE="number" NAME="initiative[]" MAXLENGTH="2" placeholder="Initiative">';
+                dieCell.innerHTML = '<INPUT TYPE="number" NAME="die[]" MAXLENGTH="2" placeholder="Würfelwert">';
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Initialize Initiative</h1>
+
+        <FORM METHOD="GET" ACTION="show_initiative.html">
+
+            <table id="initiative_table">
+                <tr>
+                    <td>Charakter Name</td>
+                    <td>Basis Initiative</td>
+                    <td>Würfelwert</td>
+                </tr>
+                <tr class="initiative_values">
+                    <th><INPUT TYPE="text" NAME="character_name[]" MAXLENGTH="20" placeholder="Charakter Name"></th>
+                    <th><INPUT TYPE="number" NAME="initiative[]" MAXLENGTH="2" placeholder="Initiative"></th>
+                    <th><INPUT TYPE="number" NAME="die[]" MAXLENGTH="2" placeholder="Würfelwert"></th>
+                </tr>
+            </table>
+
+            <br>
+
+            <INPUT TYPE="button" NAME="add" value="add" onclick="addRow();">
+
+            <br><br>
+
+            <INPUT TYPE="submit" VALUE="Save">
+        </FORM>
+
+    </body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Show Initiative</title>
+
+        <style>
+            h1 {
+                font-size: 36pt;
+            }
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+                font-size: 24pt;
+                padding: 5px;
+            }
+
+            button {
+                font-size: 24pt;
+            }
+        </style>
+
+        <script>
+            function getURLParam(key,target){
+                var values = [];
+                if (!target) target = location.href;
+
+                key = key.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+
+                var pattern = key + '=([^&#]+)';
+                var o_reg = new RegExp(pattern,'ig');
+                while (true){
+                    var matches = o_reg.exec(target);
+                    if (matches && matches[1]){
+                        values.push(matches[1]);
+                    } else {
+                        break;
+                    }
+                }
+
+                if (!values.length){
+                    return null;   
+                } else {
+                    return values.length == 1 ? values[0] : values;
+                }
+            }
+
+            function sortTable() {
+                var table, rows, switching, i, xTotal, yTotal, xBase, yBase, shouldSwitch;
+                table = document.getElementById("initiative_table");
+                switching = true;
+                /*Make a loop that will continue until
+                no switching has been done:*/
+                while (switching) {
+                    //start by saying: no switching is done:
+                    switching = false;
+                    rows = table.rows;
+                    /*Loop through all table rows (except the
+                    first, which contains table headers):*/
+                    for (i = 1; i < (rows.length - 1); i++) {
+                        //start by saying there should be no switching:
+                        shouldSwitch = false;
+                        /*Get the two elements you want to compare,
+                        one from current row and one from the next:*/
+                        xTotal = rows[i].getElementsByTagName("TD")[3];
+                        yTotal = rows[i + 1].getElementsByTagName("TD")[3];
+                        //check if the two rows should switch place:
+                        if (Number(xTotal.innerHTML) > Number(yTotal.innerHTML)) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        } else if (Number(xTotal.innerHTML) == Number(yTotal.innerHTML)) {
+                            //if total_ini is equal, compare base_ini
+                            xBase = rows[i].getElementsByTagName("TD")[2];
+                            yBase = rows[i + 1].getElementsByTagName("TD")[2];
+                            if (Number(xBase.innerHTML) > Number(yBase.innerHTML)) {
+                                //if so, mark as a switch and break the loop:
+                                shouldSwitch = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (shouldSwitch) {
+                        /*If a switch has been marked, make the switch
+                        and mark that a switch has been done:*/
+                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                        switching = true;
+                    }
+                }
+
+                //update position
+                for (var i = 1; i < rows.length; i++) {
+                    rows[i].cells[0].innerHTML = i;
+                }
+            }
+
+            function next() {
+                const table = document.getElementById("initiative_table");
+                const rows = table.rows;
+                const currPlayer = rows[1].cells[1].innerHTML;
+
+                //update total_ini of current player
+                initiative_dict[currPlayer].total_ini += initiative_dict[currPlayer].base_ini;
+                rows[1].cells[3].innerHTML = initiative_dict[currPlayer].total_ini;
+
+                //sort by total_ini
+                sortTable();
+            }
+
+            const initiative_dict = {};
+            
+            window.onload = function() {
+                const url = decodeURI(window.location.href);
+                const table = document.getElementById("initiative_table");
+                const names = getURLParam('character_name[]',url);
+                const initiatives = getURLParam('initiative[]',url);
+                const dice = getURLParam('die[]',url);
+                
+                names.forEach((name, i) => {
+                    initiative_dict[name] = {
+                        base_ini: Number(initiatives[i]),
+                        die: Number(dice[i]),
+                        total_ini: Number(initiatives[i]) + Number(dice[i])
+                    };
+
+                    var row = table.insertRow(i+1);
+                    var posCell = row.insertCell(0);
+                    var nameCell = row.insertCell(1);
+                    var iniCell = row.insertCell(2);
+                    var totalCell = row.insertCell(3);
+    
+                    posCell.innerHTML = i+1;
+                    nameCell.innerHTML = name;
+                    iniCell.innerHTML = initiative_dict[name].base_ini;
+                    totalCell.innerHTML = initiative_dict[name].total_ini;
+                });
+
+                sortTable();
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Fight!</h1>
+        <table id="initiative_table">
+            <tr>
+                <th>Position</th>
+                <th>Name</th>
+                <th>Initiative</th>
+                <th>Total</th>
+            </tr>
+        </table>
+
+        <br><br>
+
+        <button onclick="next()">next</button>
+    </body>
+</html>
