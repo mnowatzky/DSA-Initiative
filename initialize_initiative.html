@@ -8,9 +8,6 @@
             h1 {
                 font-size: 36pt;
             }
-            body {
-                font-size: 24pt;
-            }
             table, th, td {
                 border: 1px solid black;
                 border-collapse: collapse;
@@ -20,9 +17,16 @@
             input {
                 font-size: 24pt;
             }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 24pt;
+            }
         </style>
 
         <script>
+            /**
+             * Adds a row to the table to add a new character
+             */
             function addRow() {
                 const table = document.getElementById("initiative_table");
 
@@ -31,9 +35,9 @@
                 var iniCell = row.insertCell(1);
                 var dieCell = row.insertCell(2);
 
-                nameCell.innerHTML = '<INPUT TYPE="text" NAME="character_name[]" MAXLENGTH="20" placeholder="Charakter Name">';
-                iniCell.innerHTML = '<INPUT TYPE="number" NAME="initiative[]" MAXLENGTH="2" placeholder="Initiative">';
-                dieCell.innerHTML = '<INPUT TYPE="number" NAME="die[]" MAXLENGTH="2" placeholder="Würfelwert">';
+                nameCell.innerHTML = '<INPUT TYPE="text" NAME="character_name[]" MAXLENGTH="20" placeholder="Character name">';
+                iniCell.innerHTML = '<INPUT TYPE="number" NAME="initiative[]" MAXLENGTH="2" placeholder="Base initiative">';
+                dieCell.innerHTML = '<INPUT TYPE="number" NAME="die[]" MAXLENGTH="2" placeholder="Die roll">';
             }
         </script>
     </head>
@@ -44,22 +48,20 @@
 
             <table id="initiative_table">
                 <tr>
-                    <td>Charakter Name</td>
-                    <td>Basis Initiative</td>
-                    <td>Würfelwert</td>
+                    <td>Character Name</td>
+                    <td>Base Initiative</td>
+                    <td>Die roll</td>
                 </tr>
                 <tr class="initiative_values">
-                    <th><INPUT TYPE="text" NAME="character_name[]" MAXLENGTH="20" placeholder="Charakter Name"></th>
-                    <th><INPUT TYPE="number" NAME="initiative[]" MAXLENGTH="2" placeholder="Initiative"></th>
-                    <th><INPUT TYPE="number" NAME="die[]" MAXLENGTH="2" placeholder="Würfelwert"></th>
+                    <th><INPUT TYPE="text" NAME="character_name[]" MAXLENGTH="20" placeholder="Character name"></th>
+                    <th><INPUT TYPE="number" NAME="initiative[]" MAXLENGTH="2" placeholder="Base initiative"></th>
+                    <th><INPUT TYPE="number" NAME="die[]" MAXLENGTH="2" placeholder="Die roll"></th>
                 </tr>
             </table>
 
             <br>
 
-            <INPUT TYPE="button" NAME="add" value="add" onclick="addRow();">
-
-            <br><br>
+            <INPUT TYPE="button" NAME="add" value="Add Character" onclick="addRow();">
 
             <INPUT TYPE="submit" VALUE="Save">
         </FORM>

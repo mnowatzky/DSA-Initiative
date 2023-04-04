@@ -18,9 +18,17 @@
             button {
                 font-size: 24pt;
             }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 24pt;
+            }
         </style>
 
         <script>
+            /**
+             * Gets the values of the URL GET parameters
+             */
             function getURLParam(key,target){
                 var values = [];
                 if (!target) target = location.href;
@@ -41,10 +49,14 @@
                 if (!values.length){
                     return null;   
                 } else {
-                    return values.length == 1 ? values[0] : values;
+                    return values;
                 }
             }
 
+            /**
+             * Sorts the table by total initiative
+             * modified from https://www.w3schools.com/howto/howto_js_sort_table.asp
+             */
             function sortTable() {
                 var table, rows, switching, i, xTotal, yTotal, xBase, yBase, shouldSwitch;
                 table = document.getElementById("initiative_table");
@@ -94,6 +106,9 @@
                 }
             }
 
+            /**
+             * Updates the total initiative of the current player and sorts the table
+             */
             function next() {
                 const table = document.getElementById("initiative_table");
                 const rows = table.rows;
